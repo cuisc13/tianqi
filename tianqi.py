@@ -12,6 +12,7 @@ identme_url = 'http://ident.me'
 netcn_url = 'http://www.net.cn/static/customercare/yourip.asp'
 tianqi_url = 'https://www.baidu.com/home/other/data/weatherInfo'
 city_url = 'http://ip.taobao.com/service/getIpInfo.php'
+city_db = '/home/cui/.config/tianqi/city.db'
 
 def get_ip():
     # identme 是境外站点 速度慢
@@ -31,7 +32,7 @@ def print_localcity(ip):
     print(fmt.format(jso['data']))
 
 def print_termicity(city):
-    conn = sqlite3.connect('./city.db')
+    conn = sqlite3.connect(city_db)
     cur = conn.cursor()
 
     sql = '''
