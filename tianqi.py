@@ -54,14 +54,17 @@ def print_termicity(city):
     citys = cur.fetchall()
 
     city = {}
-    if len(citys) > 1:
+    n = len(citys)
+    if n > 1:
         city['name'] = citys[0][0]
         city['code'] = citys[0][1]
-    else:
+    elif n == 1:
         city['name'] = citys[0][2]
         city['code'] = citys[0][3]
         city['city_name'] = citys[0][0]
         city['city_code'] = citys[0][1]
+    else:
+        return
 
     sql = 'select name,code from province where id=%d'%citys[0][-1]
     cur.execute(sql)
@@ -71,9 +74,9 @@ def print_termicity(city):
     cur.close()
     conn.close()
     s = ""
-    if len(citys)> 1:
+    if n > 1:
         s=u"查询城市:{0[province]}({0[province_code]}),{0[name]}({0[code]})".format(city)
-    else:
+    elif n == 1:
         s=u"查询城市:{0[province]}({0[province_code]}),{0[city_name]}({0[city_code]}), {0[name]}({0[code]})".format(city)
 
     print(s)
