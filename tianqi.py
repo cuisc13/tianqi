@@ -12,7 +12,9 @@ import os
 identme_url = 'http://ident.me'
 netcn_url = 'http://www.net.cn/static/customercare/yourip.asp'
 tianqi_url = 'https://www.baidu.com/home/other/data/weatherInfo'
-city_url = 'http://ip.taobao.com/service/getIpInfo.php'
+# city_url = 'http://ip.taobao.com/service/getIpInfo.php' # 淘宝的这个api有频率限制  小气
+
+city_url = 'http://whois.pconline.com.cn/ipJson.jsp?'
 home = os.environ['HOME'] # 获得家目录
 city_db = home +'/.config/tianqi/city.db'
 
@@ -27,11 +29,17 @@ def get_ip():
     return ip
 
 def print_localcity(ip):
+    '''
     js = urlopen(city_url + "?ip=%s" % ip).read()
     jso = json.loads(js)
-    fmt = u'''当前位置: {0[area]}({0[area_id]}), {0[region]}({0[region_id]}), {0[city]}({0[city_id]})
-    '''
+    fmt = u'当前位置: {0[area]}({0[area_id]}), {0[region]}({0[region_id]}), {0[city]}({0[city_id]})'
     print(fmt.format(jso['data']))
+    '''
+    d = urlopen(city_url + "?ip=%s" % ip).read()
+    jso = json.loads(d[d.find('({')+1:d.find('})')+1].decode('gbk'))
+    fmt = u'当前位置: {0[pro]}({0[proCode]}), {0[city]}({0[cityCode]})'
+    print(fmt.format(jso))
+
 
 def print_termicity(city):
     conn = sqlite3.connect(city_db)
