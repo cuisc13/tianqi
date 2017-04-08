@@ -36,7 +36,7 @@ def print_termicity(city):
 
     sql = '''
     select
-    city.name,city.code,country.name,country.code
+    city.name,city.code,country.name,country.code,city.province_id
     from
     city
     inner join
@@ -52,8 +52,6 @@ def print_termicity(city):
 '''
     cur.execute(sql.format(city=city))
     citys = cur.fetchall()
-    cur.close()
-    conn.close()
 
     city = {}
     if len(citys) > 1:
@@ -62,10 +60,23 @@ def print_termicity(city):
     else:
         city['name'] = citys[0][2]
         city['code'] = citys[0][3]
+        city['city_name'] = citys[0][0]
+        city['city_code'] = citys[0][1]
 
+    sql = 'select name,code from province where id=%d'%citys[0][-1]
+    cur.execute(sql)
+    province = cur.fetchall()[0]
+    city['province'] = province[0]
+    city['province_code'] = province[1]
+    cur.close()
+    conn.close()
+    s = ""
+    if len(citys)> 1:
+        s=u"查询城市:{0[province]}({0[province_code]}),{0[name]}({0[code]})".format(city)
+    else:
+        s=u"查询城市:{0[province]}({0[province_code]}),{0[city_name]}({0[city_code]}), {0[name]}({0[code]})".format(city)
 
-    print(u"查询的城市: {0[name]}, 编号:{0[code]}".format(city))
-
+    print(s)
 
 def get_city():
     city = ''
