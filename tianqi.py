@@ -21,7 +21,7 @@ def get_ip():
 
 def get_city():
     city = ''
-    if len(sys.argv)>2:
+    if len(sys.argv)>1:
         city = sys.argv[1]
 
     return city
@@ -38,17 +38,18 @@ def get_weather(city=None, ip=None):
     return jso
 
 def print_w(w):
-    fmt = u'''
-    {city}
-    {0[time]}
-    {0[condition]}
-    {0[wind]}
-    {0[temp]}
+    fmt = u'''日期：    {0[time]}
+天气：    {0[condition]}
+风力：    {0[wind]}
+温度：    {0[temp]}
     '''
     content = w['data']['weather']['content']
     city = content['city']
-    days = ['today','tomorrow','thirdday','fourthday', 'fifthday']
-    for day in days:
+    dayl = ['today','tomorrow','thirdday','fourthday', 'fifthday']
+    daym = {'today':'今天','tomorrow':'明天','thirdday':'后天','fourthday':'第四天', 'fifthday':'第五天'}
+    print(u"查询的城市是%s" % city)
+    for day in dayl:
+        print(daym[day])
         print(fmt.format(content[day],city=city))
     pass
 
