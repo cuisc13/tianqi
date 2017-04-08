@@ -5,26 +5,19 @@ from urllib2 import urlopen
 import sys
 
 identme_url = 'http://ident.me'
+netcn_url = 'http://www.net.cn/static/customercare/yourip.asp'
 tianqi_url = 'https://www.baidu.com/home/other/data/weatherInfo'
-'''
-tianqi_res = urlopen(tianqi_url+'?ip=%s' % globalip).read()
-tianqi_jso = json.loads(tianqi_res)
-
-weather = tianqi_jso['data']['weather']
-content = weather['content']
-today = content['today']
-city = content['city']
-
-print (u"当前城市:%s" % city)
-
-for k in today:
-    print("%s:  %s" %(k,today[k]))
-'''
 
 def get_ip():
-    globalip = urlopen(identme_url).read()
-    print("当前IP：%s" % globalip)
-    return globalip
+    # identme 是境外站点 速度慢
+    #globalip = urlopen(identme_url).read()
+    html = urlopen(netcn_url).read()
+
+    # net.cn 是国内站点速度快
+    ip = html[html.find('<h2>')+4:html.find('</h2>')].split(', ')[0]
+    print(ip)
+    print("当前IP：%s" % ip)
+    return ip
 
 def get_city():
     city = ''
