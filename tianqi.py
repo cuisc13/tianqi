@@ -10,6 +10,7 @@ import sys
 identme_url = 'http://ident.me'
 netcn_url = 'http://www.net.cn/static/customercare/yourip.asp'
 tianqi_url = 'https://www.baidu.com/home/other/data/weatherInfo'
+city_url = 'http://ip.taobao.com/service/getIpInfo.php'
 
 def get_ip():
     # identme 是境外站点 速度慢
@@ -20,6 +21,13 @@ def get_ip():
     ip = html[html.find('<h2>')+4:html.find('</h2>')].split(', ')[0]
     print("当前IP：%s" % ip)
     return ip
+
+def print_localcity(ip):
+    js = urlopen(city_url + "?ip=%s" % ip).read()
+    jso = json.loads(js)
+    fmt = u'''当前位置: {0[area]}({0[area_id]}), {0[region]}({0[region_id]}), {0[city]}({0[city_id]})
+    '''
+    print(fmt.format(jso['data']))
 
 def get_city():
     city = ''
@@ -61,6 +69,7 @@ def print_w(w,city=''):
 def main():
     ip = get_ip()
     city = get_city()
+    print_localcity(ip)
     weather=get_weather(city=city,ip=ip)
     print_w(weather,city=city)
     pass
