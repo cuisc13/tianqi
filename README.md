@@ -8,7 +8,8 @@
 ----
 ```sh
 sudo cp ./tianqi.py /usr/local/bin/tian
-
+mkdir ~/.config/tianqi
+cp ./city.db ~/.config/tianqi/
 tian
 
 tian 济南

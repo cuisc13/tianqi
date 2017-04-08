@@ -7,12 +7,14 @@ import json
 from urllib2 import urlopen
 import sys
 import sqlite3
+import os
 
 identme_url = 'http://ident.me'
 netcn_url = 'http://www.net.cn/static/customercare/yourip.asp'
 tianqi_url = 'https://www.baidu.com/home/other/data/weatherInfo'
 city_url = 'http://ip.taobao.com/service/getIpInfo.php'
-city_db = '/home/cui/.config/tianqi/city.db'
+home = os.environ['HOME'] # 获得家目录
+city_db = home +'/.config/tianqi/city.db'
 
 def get_ip():
     # identme 是境外站点 速度慢
