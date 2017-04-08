@@ -6,6 +6,7 @@
 import json
 from urllib2 import urlopen
 import sys
+import sqlite3
 
 identme_url = 'http://ident.me'
 netcn_url = 'http://www.net.cn/static/customercare/yourip.asp'
@@ -28,6 +29,43 @@ def print_localcity(ip):
     fmt = u'''当前位置: {0[area]}({0[area_id]}), {0[region]}({0[region_id]}), {0[city]}({0[city_id]})
     '''
     print(fmt.format(jso['data']))
+
+def print_termicity(city):
+    conn = sqlite3.connect('./city.db')
+    cur = conn.cursor()
+
+    sql = '''
+    select
+    city.name,city.code,country.name,country.code
+    from
+    city
+    inner join
+    country
+    on
+    city.id = country.city_id
+    where
+    city.name like "%{city}%"
+    or
+    country.name like "%{city}%"
+    limit 2
+    ;
+'''
+    cur.execute(sql.format(city=city))
+    citys = cur.fetchall()
+    cur.close()
+    conn.close()
+
+    city = {}
+    if len(citys) > 1:
+        city['name'] = citys[0][0]
+        city['code'] = citys[0][1]
+    else:
+        city['name'] = citys[0][2]
+        city['code'] = citys[0][3]
+
+
+    print(u"查询的城市: {0[name]}, 编号:{0[code]}".format(city))
+
 
 def get_city():
     city = ''
@@ -70,6 +108,7 @@ def main():
     ip = get_ip()
     city = get_city()
     print_localcity(ip)
+    if city:print_termicity(city)
     weather=get_weather(city=city,ip=ip)
     print_w(weather,city=city)
     pass
