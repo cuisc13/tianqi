@@ -36,14 +36,17 @@ def get_weather(city=None, ip=None):
     jso = json.loads(res.read())
     return jso
 
-def print_w(w):
+def print_w(w,city=''):
     fmt = u'''{today}\t{0[time]}
 日期\t{0[date]}
 天气\t{0[condition]}
 风力\t{0[wind]}
 温度\t{0[temp]}
     '''
-    content = w['data']['weather']['content']
+    content = w['data']['weather'].get('content')
+    if not content:
+        print(u"查询的城市不在服务范围内:%s"%city.decode('utf8'))
+        return
     city = content['city']
     dayl = ['today','tomorrow','thirdday','fourthday', 'fifthday']
     daym = {'today':'今天','tomorrow':'明天','thirdday':'后天','fourthday':'第四天', 'fifthday':'第五天'}
@@ -56,7 +59,7 @@ def main():
     ip = get_ip()
     city = get_city()
     weather=get_weather(city=city,ip=ip)
-    print_w(weather)
+    print_w(weather,city=city)
     pass
 
 if __name__ == '__main__':
