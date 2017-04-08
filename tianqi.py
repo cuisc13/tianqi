@@ -1,4 +1,4 @@
-#!/usr/local/bin/python2
+#!env python2
 #-*-coding:utf-8-*-
 #autho:Tony Cui
 #email:cuisc13@gmail.com
