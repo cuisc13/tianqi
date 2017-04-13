@@ -115,11 +115,15 @@ def get_weather(city=None, ip=None):
     return jso
 
 def print_w(w,city=''):
+    print("")
     fmt = u'''{today}\t{0[time]}
 日期\t{0[date]}
 天气\t{0[condition]}
 风力\t{0[wind]}
 温度\t{0[temp]}
+'''
+    pm25_fmt = u'''PM2.5\t{0[pm25]}
+污染\t{0[pollution]}
     '''
     content = w['data']['weather'].get('content')
     if not content:
@@ -130,7 +134,16 @@ def print_w(w,city=''):
     daym = {'today':'今天','tomorrow':'明天','thirdday':'后天','fourthday':'第四天', 'fifthday':'第五天'}
     print(u"查询的城市: %s" % city)
     for day in dayl:
-        print(fmt.format(content[day],today=daym[day].decode('utf8'), city=city))
+        line = ""
+        pm25_line = ""
+        weather_line = ""
+        today = daym[day].decode('utf8')
+        if day == 'today':
+            content[day]['time'] += u"\n农历\t"+content['calendar']['lunar']
+            pm25_line = pm25_fmt.format(content[day])
+        weather_line = fmt.format(content[day],today=today, city=city)
+        line = weather_line + pm25_line
+        print(line)
     pass
 
 def main():
