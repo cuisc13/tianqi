@@ -1,4 +1,4 @@
-#!env python2
+#!env python2.7
 #-*-coding:utf-8-*-
 #autho:Tony Cui
 #email:cuisc13@gmail.com
