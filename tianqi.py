@@ -12,9 +12,9 @@ import os
 identme_url = 'http://ident.me'
 netcn_url = 'http://www.net.cn/static/customercare/yourip.asp'
 tianqi_url = 'https://www.baidu.com/home/other/data/weatherInfo'
-# city_url = 'http://ip.taobao.com/service/getIpInfo.php' # 淘宝的这个api有频率限制  小气
+city_url = 'http://ip.taobao.com/service/getIpInfo.php' # 淘宝的这个api有频率限制  小气
 
-city_url = 'http://whois.pconline.com.cn/ipJson.jsp'
+# city_url = 'http://whois.pconline.com.cn/ipJson.jsp'
 home = os.environ['HOME'] # 获得家目录
 city_db = home +'/.config/tianqi/city.db'
 
